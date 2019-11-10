@@ -73,10 +73,23 @@ def getWidthHeight(size:float, aratio:float):
 	return (width, height)
 
 
+def printHelp():
+
+	filename = sys.argv[0]
+
+	print("Usage:")
+	print("$ " + filename + " Size AspectRatio")
+	print("Example:")
+	print("$ " + filename + " 5.7 16:9")
+	return
+
+
 if __name__ == "__main__":
 	
 	try:
 		ret = main(sys.argv)
 	except ScreenSizeException as e:
 		print(e.message)
+		print("")
+		printHelp()
 
