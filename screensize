@@ -7,20 +7,36 @@ Calculate the dimensions of a screen given its size and aspect ratio.
 import sys
 
 
+class ScreenSizeException(BaseException):
+	message = "Exceptional exception!"
+
+	def __init__(self, message=None):
+		if message != None:
+			self.message = message
+
+
+class NotEnoughArgsException(ScreenSizeException):
+	message = "Not enough arguments"
+
+
+class SizeNotNumericException(ScreenSizeException):
+	message = "Size not numeric"
+
+
+class InvalidAspectRatioException(ScreenSizeException):
+	message = "Aspect ratio invalid"
+
+
 def main(args):
 
 	if len(args) < 3:
-		return -1
+		raise NotEnoughArgsException()
 
 	size = args[1]
 	aratio = args[2]
 
-	wh = getWidthHeightFromStr(size, aratio)
+	(width, height) = getWidthHeightFromStr(size, aratio)
 
-	if wh[0] == None:
-		return wh[1]
-
-	(width, height) = wh
 	print("Width: " + str(width))
 	print("Height: " + str(height))
 
@@ -32,16 +48,16 @@ def getWidthHeightFromStr(size:str, aratio_raw:str):
 	try:
 		size = float(size)
 	except ValueError:
-		return (None, -2)
+		raise SizeNotNumericException()
 
 	if not ":" in aratio_raw:
-		return (None, -3)
+		raise InvalidAspectRatioException()
 
 	aratio_parts = aratio_raw.split(":")
 	try:
 		aratio = float(aratio_parts[0]) / float(aratio_parts[1])
 	except ValueError:
-		return (None, -4)
+		raise InvalidAspectRatioException()
 
 	if aratio < 1:
 		aratio = 1 / aratio
@@ -57,14 +73,10 @@ def getWidthHeight(size:float, aratio:float):
 	return (width, height)
 
 
-def printHelp(ret):
-
-	print("Help " + str(ret))
-	return
-
-
 if __name__ == "__main__":
 	
-	ret = main(sys.argv)
-	if ret < 0:
-		printHelp(ret)
+	try:
+		ret = main(sys.argv)
+	except ScreenSizeException as e:
+		print(e.message)
+
