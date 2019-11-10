@@ -1,0 +1,70 @@
+#!/usr/bin/env python3
+
+"""
+Calculate the dimensions of a screen given its size and aspect ratio.
+"""
+
+import sys
+
+
+def main(args):
+
+	if len(args) < 3:
+		return -1
+
+	size = args[1]
+	aratio = args[2]
+
+	wh = getWidthHeightFromStr(size, aratio)
+
+	if wh[0] == None:
+		return wh[1]
+
+	(width, height) = wh
+	print("Width: " + str(width))
+	print("Height: " + str(height))
+
+	return 0
+
+
+def getWidthHeightFromStr(size:str, aratio_raw:str):
+
+	try:
+		size = float(size)
+	except ValueError:
+		return (None, -2)
+
+	if not ":" in aratio_raw:
+		return (None, -3)
+
+	aratio_parts = aratio_raw.split(":")
+	try:
+		aratio = float(aratio_parts[0]) / float(aratio_parts[1])
+	except ValueError:
+		return (None, -4)
+
+	if aratio < 1:
+		aratio = 1 / aratio
+
+	return getWidthHeight(size, aratio)
+
+
+def getWidthHeight(size:float, aratio:float):
+
+	width = round((size/aratio)**0.5, 2)
+	height = round(width * aratio, 2)
+
+	return (width, height)
+
+
+def printHelp(ret):
+
+	print("Help " + str(ret))
+	return
+
+
+if __name__ == "__main__":
+	
+	ret = main(sys.argv)
+	if ret < 0:
+		printHelp(ret)
