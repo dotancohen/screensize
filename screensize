@@ -65,12 +65,12 @@ def getWidthHeightFromStr(size:str, aratio_raw:str):
 	return getWidthHeight(size, aratio)
 
 
-def getWidthHeight(size:float, aratio:float):
+def getWidthHeight(size:float, aratio:float, precision:int=2):
 
-	width = round((size/aratio)**0.5, 2)
-	height = round(width * aratio, 2)
+	width = ( size**2 / ( 1 + aratio**-2 ) ) ** 0.5
+	height = width / aratio
 
-	return (width, height)
+	return (round(width, precision), round(height, precision))
 
 
 def printHelp():
