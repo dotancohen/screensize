@@ -1,4 +1,4 @@
-# screensize
+# ScreenSize
 
 Calculate the dimensions of a screen given its size and aspect ratio.
 
@@ -7,14 +7,14 @@ https://github.com/dotancohen/screensize
 ## Usage
 
 ```
-$ screensize.py Size AspectRatio
+$ screensize Size AspectRatio
 ```
 
 ## Example
 
 ```
-$ screensize.py 5.7 16:9
-Width: 1.79
-Height: 3.18
+$ screensize 5.7 16:9
+Width: 4.97
+Height: 2.79
 ```
 
